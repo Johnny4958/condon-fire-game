@@ -6,7 +6,7 @@ Play: https://johnny4958.github.io/condon-fire-game/
 
 The game lays itself out in landscape with a sidebar on laptops and in portrait on phones.
 
-Each game picks 6 hazards per room at random from a set of 10 (the office always keeps the power strips and the paint shop always keeps the booth filters, since that's where their fires start), so players can't just memorize where to tap. The set includes an extinguisher left on the floor under its empty hook (it can land on different hooks in the office) and an extinguisher used as a doorstop. A game never shows the same picks twice in a row.
+Each game picks 6 hazards per room at random from a set of 10 (11 in the paint shop; the office always keeps the power strips and the paint shop always keeps the booth filters, since that's where their fires start), so players can't just memorize where to tap. The set includes an extinguisher left on the floor under its empty hook (it can land on different hooks in the office) and an extinguisher used as a doorstop. A game never shows the same picks twice in a row.
 
 ## Top-score reward (on)
 
