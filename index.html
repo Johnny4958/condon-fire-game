@@ -51,6 +51,20 @@ p{font-size:calc(var(--u)*4.1);line-height:1.35;margin:calc(var(--u)*2) 0}
 #mute{position:absolute;right:calc(var(--u)*2);bottom:calc(var(--u)*2);width:calc(var(--u)*9);height:calc(var(--u)*9);border-radius:50%;border:0;background:rgba(255,255,255,.12);color:#fff;font-size:calc(var(--u)*4.4);z-index:5;cursor:pointer;touch-action:manipulation}
 #toastc{position:absolute;left:50%;top:44%;transform:translateX(-50%);background:var(--char);color:#fff;padding:calc(var(--u)*2.4) calc(var(--u)*4);border-radius:calc(var(--u)*2);font-size:calc(var(--u)*3.8);display:none;z-index:9}
 #end{padding:calc(var(--u)*2)}
+.perf{display:none;margin:calc(var(--u)*2.2) 0 0;font-size:calc(var(--u)*3.4);line-height:1.3;color:#3d3c39}
+.perf b{display:block;font:800 calc(var(--u)*5.4)/1 'Barlow Condensed',sans-serif;letter-spacing:.06em;color:var(--green);text-transform:uppercase;margin-bottom:calc(var(--u)*.8)}
+#eReward{display:none;background:var(--green);box-shadow:0 calc(var(--u)*1) 0 #00602a}
+#eReward[disabled]{background:#9a9890;box-shadow:none;cursor:default}
+#reward .panel{text-align:left}#reward h2{font-size:calc(var(--u)*8)}
+#reward p{font-size:calc(var(--u)*3.8);line-height:1.35;margin:calc(var(--u)*1.5) 0}
+.pv{background:#fff3c4;border:2px solid #e2b11a;border-radius:calc(var(--u)*1.5);padding:calc(var(--u)*2) calc(var(--u)*2.6);font-size:calc(var(--u)*3.4);line-height:1.3;margin-bottom:calc(var(--u)*2.5);color:#5a4500}
+.fld{display:block;margin:calc(var(--u)*2.2) 0 0;font:700 calc(var(--u)*3.4)/1.2 'Source Sans 3',sans-serif;color:#3d3c39}
+.fld input{display:block;width:100%;box-sizing:border-box;margin-top:calc(var(--u)*1);padding:calc(var(--u)*2.6) calc(var(--u)*2.8);font:500 calc(var(--u)*4.2)/1.2 'Source Sans 3',sans-serif;border:2px solid #cfcac0;border-radius:calc(var(--u)*1.6);background:#fff;color:#242629;font-size:max(16px,calc(var(--u)*4.2));-webkit-user-select:text;user-select:text}
+.fld input:focus{outline:none;border-color:var(--red)}
+.chk{display:flex;gap:calc(var(--u)*2);align-items:flex-start;margin:calc(var(--u)*2.6) 0 0;font-size:calc(var(--u)*3.3);line-height:1.3;color:#3d3c39}
+.chk input{width:calc(var(--u)*5);height:calc(var(--u)*5);flex-shrink:0;margin:0}
+#rMsg{min-height:calc(var(--u)*4);margin-top:calc(var(--u)*2);font-size:calc(var(--u)*3.5);font-weight:700;color:var(--red)}
+#rDone{display:none}#rDone .tip{margin-top:calc(var(--u)*2)}
 #end .panel{padding:calc(var(--u)*3) calc(var(--u)*4.2)}
 #end .logo{width:40%;margin-bottom:calc(var(--u)*1)}
 #end .big{font-size:calc(var(--u)*14);margin:0}
@@ -103,6 +117,8 @@ p{font-size:calc(var(--u)*4.1);line-height:1.35;margin:calc(var(--u)*2) 0}
  <div class="rank" id="eRank"></div>
  <div class="stats"><div><b id="eHaz">0/18</b>hazards found</div><div><b id="eFire">0/3</b>fires out</div><div><b id="eRush">0/1</b>kitchen pull</div></div>
  <div class="best" id="eBest"></div>
+ <div class="perf" id="ePerfect"></div>
+ <button class="btn" id="eReward" type="button">Claim 5% off</button>
  </div>
  <div class="cta">
   <h3>Is your building ready for real?</h3>
@@ -112,6 +128,22 @@ p{font-size:calc(var(--u)*4.1);line-height:1.35;margin:calc(var(--u)*2) 0}
   <div class="small">Veteran-founded, locally owned &middot; 5324 English Ave, Indianapolis &middot; Mon&ndash;Fri 8 a.m.&ndash;4 p.m. &middot; 24-hour emergency service &middot; <a href="https://condonfire.com/" target="_blank" rel="noopener" style="color:#fff">condonfire.com</a></div>
  </div>
  <div class="row"><button class="btn ghost" id="eShare">Share score</button><button class="btn ghost" id="eAgain">Play again</button></div>
+</div></div>
+<div class="ov" id="reward"><div class="panel">
+ <div class="pv" id="rPrev"><b>Preview only.</b> This reward isn't an active offer yet. Nothing you type here is sent or saved.</div>
+ <div class="kick">Top score reward</div>
+ <h2>5% off your next Condon service</h2>
+ <div id="rForm">
+  <p>Enter your contact info so Condon can verify your reward. One reward per customer: Condon checks your email and phone before the discount is applied.</p>
+  <label class="fld">Name<input id="rName" type="text" autocomplete="name" maxlength="80"></label>
+  <label class="fld">Email<input id="rEmail" type="email" inputmode="email" autocomplete="email" maxlength="120"></label>
+  <label class="fld">Phone<input id="rPhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20"></label>
+  <label class="chk"><input id="rOk" type="checkbox"><span>Condon Fire &amp; Safety can contact me to verify this reward.</span></label>
+  <div id="rMsg" role="status" aria-live="polite"></div>
+  <button class="btn" id="rSend" type="button">Claim my 5% off</button>
+ </div>
+ <div id="rDone"><div class="tip"><b id="rDoneHead">Request sent to Condon</b><span id="rDoneBody"></span></div></div>
+ <button class="btn ghost" id="rBack" type="button">Back to my score</button>
 </div></div>
 <div id="toastc"></div>
 </div></div>
@@ -202,8 +234,10 @@ const LEVELS=[
  {id:'door',x:617,y:412,r:64,hb:[552,336,684,480],label:'Exit door chained shut',tip:'A chained exit traps people inside during a fire, and Condon trains staff to keep every exit open.'},
  {id:'blocked',x:475,y:470,r:70,hb:[416,398,536,556],label:'Extinguisher blocked by boxes',tip:'Nobody can grab an extinguisher buried behind boxes, and Condon inspects and services extinguishers.'},
  {id:'candle',x:304,y:420,r:58,hb:[248,378,350,458],label:'Lit candle next to papers',tip:'An open flame next to paper can start a fire in seconds, and Condon trains staff to put out small fires fast.'},
- {id:'strips',x:195,y:600,r:80,hb:[66,548,326,628],label:'Power strips plugged into each other',tip:'Chained power strips overload the outlet and can overheat, and Condon\'s training covers electrical fire risks.'},
- {id:'emer',x:410,y:140,r:72,label:'Emergency light hanging off the wall',tip:'A broken emergency light leaves people in the dark when the power fails, and Condon tests and repairs them.'}],
+ {id:'strips',req:1,x:195,y:600,r:80,hb:[66,548,326,628],label:'Power strips plugged into each other',tip:'Chained power strips overload the outlet and can overheat, and Condon\'s training covers electrical fire risks.'},
+ {id:'emer',x:410,y:140,r:72,label:'Emergency light hanging off the wall',tip:'A broken emergency light leaves people in the dark when the power fails, and Condon tests and repairs them.'},
+ {id:'det',x:250,y:44,r:44,hb:[220,16,282,74],label:'Smoke detector covered with a bag',tip:'A covered detector can\'t sense smoke, so nobody gets the early warning to get out.'},
+ {id:'heatO',x:520,y:676,r:74,hb:[440,612,604,742],label:'Space heater against a full trash can',tip:'Heaters need open space around them. Paper touching a hot heater can catch fire.'}],
  fire:{x:195,base:628,w:170,what:'The overloaded power strip under the desk is on fire.',correct:['co2','abc'],
   fb:{co2:'Right call. CO\u2082 works on electrical fires and leaves no residue on electronics.',abc:'That works. ABC dry chemical is rated for electrical (Class C) fires.',water:'No! Water conducts electricity. That is a shock hazard on an electrical fire.',k:'Class K is made for commercial cooking oil fires, not electrical ones.'}}},
 {key:'kitchen',rush:true,name:'Restaurant Kitchen',intro:'Find 6 hazards in 35 seconds. Then the Kitchen Fire Rush: the suppression system can only go off ONCE, so pull the station only for a real fire.',
@@ -214,7 +248,9 @@ const LEVELS=[
  {id:'nok',x:522,y:392,r:60,hb:[488,284,556,452],label:'Kitchen extinguisher missing',tip:'An empty hook means nothing to grab when a grease fire starts, and Condon services Class K extinguishers.'},
  {id:'cans',x:356,y:268,r:60,hb:[300,232,410,306],label:'Spray cans above the stove',tip:'Aerosol cans can burst into flames when they get hot, and Condon\'s training covers safe storage in kitchens.'},
  {id:'pull',x:584,y:356,r:56,hb:[542,310,616,600],label:'Pull station blocked by boxes',tip:'The pull station belongs on the way out at hand height, easy to reach in seconds, and Condon inspects the whole system, pull station included.'},
- {id:'towel',x:454,y:428,r:54,hb:[420,392,478,470],label:'Towel touching a lit burner',tip:'A towel this close to a flame can catch and spread fire down the line, and Condon\'s training covers this.'}],
+ {id:'towel',x:454,y:428,r:54,hb:[420,392,478,470],label:'Towel touching a lit burner',tip:'A towel this close to a flame can catch and spread fire down the line, and Condon\'s training covers this.'},
+ {id:'filter',x:69,y:163,r:40,hb:[38,130,100,196],label:'Hood filter missing over the fryer',tip:'Without the filter, grease goes straight up into the duct, where a fire is hard to reach.'},
+ {id:'trash',x:226,y:660,r:58,hb:[176,598,278,724],label:'Overflowing trash by the cooking line',tip:'Cardboard and paper piled next to hot equipment gives a fire something to grow on.'}],
  fire:{x:100,base:398,w:104,what:'The hot fryer oil flared back up, and the system is already spent. Grab the backup extinguisher.',correct:['k'],
   fb:{k:'Right call. Class K wet chemical cools the oil and smothers it with a soapy layer.',water:'Never put water on a grease fire. It flashes to steam and throws burning oil.',abc:'Not for commercial cooking oil fires. The kitchen needs Class K.',co2:'CO\u2082 is not the right tool for a commercial cooking oil fire. The kitchen needs Class K.'}}},
 {key:'shop',name:'Paint Shop',intro:'Find 6 hazards in 35 seconds. Then a solvent fire breaks out. Pick the right extinguisher and sweep at the base.',
@@ -225,38 +261,86 @@ const LEVELS=[
  {id:'exitb',x:628,y:458,r:70,hb:[552,396,704,524],label:'Exit blocked by boxes',tip:'Boxes stacked in front of the exit trap people inside during a fire, and Condon trains staff to keep exits clear.'},
  {id:'cord',x:640,y:716,r:60,hb:[580,672,712,762],label:'Damaged cord with bare wires',tip:'Bare wires throw sparks that can ignite paint fumes, and Condon\'s training covers electrical hazards.'},
  {id:'rags',x:330,y:592,r:58,hb:[284,540,378,640],label:'Oily rags piled in an open bin',tip:'Oily rags can heat up and catch fire on their own, and Condon\'s training covers safe storage.'},
- {id:'heater',x:479,y:622,r:86,hb:[398,568,566,670],label:'Space heater next to paint cans',tip:'A glowing heater beside paint thinner is a fire waiting to happen, and Condon trains crews to keep them apart.'}],
+ {id:'heater',x:479,y:622,r:86,hb:[398,568,566,670],label:'Space heater next to paint cans',tip:'A glowing heater beside paint thinner is a fire waiting to happen, and Condon trains crews to keep them apart.'},
+ {id:'gascan',x:108,y:694,r:62,hb:[52,614,168,768],label:'Gas can left open with no cap',tip:'Gas fumes spread along the floor and can reach a spark or heater. Cap it and store it in a flammables cabinet.'},
+ {id:'exitlt',x:632,y:222,r:52,hb:[566,192,698,252],label:'Exit sign is out',tip:'In smoke or a power outage, a dark exit sign won\'t show anyone the way out.'}],
  fire:{x:440,base:712,w:200,what:'Spilled paint thinner on the floor just caught fire.',correct:['co2','abc'],
   fb:{co2:'Right call. CO\u2082 smothers flammable liquid (Class B) fires.',abc:'Right call. ABC dry chemical is rated for flammable liquid (Class B) fires.',water:'No! Water can spread a burning liquid across the floor.',k:'Class K is for commercial cooking oils, not solvents and paint thinner.'}}}];
 const SPOT_TIME=35;
 
 // ---------- state ----------
-const S={phase:'title',L:0,score:0,lvl:0,time:0,found:new Set(),missed:[],marks:[],toast:null,fire:null,picks:0,pass:{p:0,a:0,s:0,w:0},agent:1,ptr:{x:0,y:0,down:false,px:0},sweepV:0,sweepT:0,rush:null,t:0,phaseT:0,msg:null,shake:0,stats:{haz:0,fires:0,rush:0,falsePulls:0},pickedExt:'abc',outOK:false,idle:0,sysFired:false};
+const S={phase:'title',L:0,score:0,lvl:0,time:0,found:new Set(),missed:[],marks:[],toast:null,fire:null,picks:0,pass:{p:0,a:0,s:0,w:0},agent:1,ptr:{x:0,y:0,down:false,px:0},sweepV:0,sweepT:0,rush:null,t:0,phaseT:0,msg:null,shake:0,stats:{haz:0,fires:0,rush:0,falsePulls:0,first:0},act:null,pickedExt:'abc',outOK:false,idle:0,sysFired:false};
 let best=0;try{best=+localStorage.getItem('condonFireBest')||0}catch(e){}
 const bestT=document.getElementById('bestT');function showBest(){bestT.textContent=best?('Best score: '+best.toLocaleString()):''}showBest();
 const lv=()=>LEVELS[S.L];
+const PER_LEVEL=6;let lastSets='';
+function shuf(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function rollHazards(){let key='';for(let t=0;t<12;t++){S.act=LEVELS.map(l=>{const req=l.hazards.filter(h=>h.req),rest=shuf(l.hazards.filter(h=>!h.req));const pickIds=new Set(req.concat(rest.slice(0,PER_LEVEL-req.length)).map(h=>h.id));return l.hazards.filter(h=>pickIds.has(h.id))});key=S.act.map(a=>a.map(h=>h.id).join(',')).join('|');if(key!==lastSets)break}lastSets=key}
+const HZ=()=>S.act[S.L];
 function add(n,x,y){S.score=Math.max(0,S.score+n);S.lvl+=n;if(x!=null)pop(x,y,(n>0?'+':'')+n,n>0?GREEN:'#d11')}
 function setMsg(text,good,dur){S.msg={text,good,t:dur||3}}
 
 // overlays
 const $=id=>document.getElementById(id);
-function ov(id){['title','card','end'].forEach(k=>$(k).classList.toggle('on',k===id))}
+function ov(id){['title','card','end','reward'].forEach(k=>$(k).classList.toggle('on',k===id))}
 function card(kick,head,body,tip,btn,fn){$('cKick').textContent=kick;$('cHead').textContent=head;$('cBody').textContent=body;$('cTip').style.display=tip?'block':'none';$('cTip').querySelector('span').textContent=tip||'';$('cBtn').textContent=btn;$('cBtn').onclick=()=>{sfx.click();ov(null);fn()};ov('card');S.phase='card'}
 $('play').onclick=()=>{ac();sfx.click();startGame()};
 $('eAgain').onclick=()=>{sfx.click();startGame()};
 
-function startGame(){S.score=0;S.L=0;S.stats={haz:0,fires:0,rush:0,falsePulls:0};intro()}
+rollHazards();
+function startGame(){S.score=0;S.L=0;S.stats={haz:0,fires:0,rush:0,falsePulls:0,first:0};rollHazards();intro()}
 function intro(){const l=lv();S.found=new Set();S.missed=[];S.marks=[];S.toast=null;S.fire=null;S.rush=null;S.idle=0;S.sysFired=false;S.lvl=0;parts=[];
  card('Level '+(S.L+1)+' of 3',l.name,l.intro,null,'Start',beginSpot)}
 function beginSpot(){S.phase='spot';S.time=SPOT_TIME;S.phaseT=0;S.toast={title:'Tap every fire hazard you see',body:'Wrong taps cost points, so look before you tap.',good:null}}
-function endSpot(){const l=lv();const all=S.found.size===l.hazards.length;if(all){const b=Math.round(S.time*10);if(b>0){add(b);setMsg('All hazards found! Time bonus +'+b,true,2.2)}}else setMsg('Missed '+(l.hazards.length-S.found.size)+'. They are circled in red.',false,2.2);S.missed=l.hazards.filter(h=>!S.found.has(h.id));S.phase='reveal';S.phaseT=all?1.2:2.4}
+function endSpot(){const l=lv();const all=S.found.size===HZ().length;if(all){const b=Math.round(S.time*10);if(b>0){add(b);setMsg('All hazards found! Time bonus +'+b,true,2.2)}}else setMsg('Missed '+(HZ().length-S.found.size)+'. They are circled in red.',false,2.2);S.missed=HZ().filter(h=>!S.found.has(h.id));S.phase='reveal';S.phaseT=all?1.2:2.4}
 function beginFire(){const f=lv().fire;const n=5,cells=[];for(let i=0;i<n;i++)cells.push({x:f.x-f.w/2+f.w*i/(n-1),v:.35+Math.random()*.15,re:0,seed:Math.random()*10});S.fire={...f,cells,danger:0,sp:f.w/(n-1)};S.phase='pick';S.picks=0;S.pass={p:0,a:0,s:0,w:0};sfx.alarm();setMsg('FIRE! '+f.what,false,99)}
-function pick(id){const f=S.fire;S.pickedExt=id;if(f.correct.includes(id)){sfx.good();add(S.picks===0?150:50,360,HUD+SH-40);setMsg(f.fb[id],true,3);S.phase='pull';S.phaseT=0}else{sfx.bad();S.picks++;add(-50,360,HUD+SH-40);S.shake=.3;f.cells.forEach(c=>c.v=Math.min(1,c.v+.18));f.danger+=.08;setMsg(f.fb[id]+' Pick again.',false,4)}}
+function pick(id){const f=S.fire;S.pickedExt=id;if(f.correct.includes(id)){sfx.good();if(S.picks===0)S.stats.first++;add(S.picks===0?150:50,360,HUD+SH-40);setMsg(f.fb[id],true,3);S.phase='pull';S.phaseT=0}else{sfx.bad();S.picks++;add(-50,360,HUD+SH-40);S.shake=.3;f.cells.forEach(c=>c.v=Math.min(1,c.v+.18));f.danger+=.08;setMsg(f.fb[id]+' Pick again.',false,4)}}
 function fireDone(ok,reason){sprayOn(false);S.ptr.down=false;S.phase='out';S.phaseT=2.6;S.outOK=ok;if(ok){const b=250+Math.round(S.agent*150);add(b,lv().fire.x,lv().fire.base-140);S.stats.fires++;sfx.win();setMsg('FIRE OUT! +'+b+'  Now get that extinguisher recharged.',true,3)}else{sfx.bad();setMsg(reason,false,3)}}
 function levelDone(){const l=lv();const tip=S.outOK?'Used an extinguisher, even for a second? It needs a recharge before it goes back on the wall. '+l.done:'If a fire is spreading or blocking your way out, get out and call 911. '+l.done;
  const last=S.L===LEVELS.length-1;card('Level '+(S.L+1)+' complete',l.name+': '+Math.max(0,S.lvl).toLocaleString()+' pts','Total score: '+S.score.toLocaleString(),tip,last?'See your score':'Next: '+LEVELS[S.L+1].name,()=>{if(last)endGame();else{S.L++;intro()}})}
-function rankOf(s){return s>=4800?'Fire Marshal':s>=3400?'Safety Pro':s>=1900?'Safety Rookie':'Needs Training'}
-function endGame(){S.phase='end';if(S.score>best){best=S.score;try{localStorage.setItem('condonFireBest',best)}catch(e){}}showBest();$('eScore').textContent=S.score.toLocaleString();$('eRank').textContent=rankOf(S.score);$('eHaz').textContent=S.stats.haz+'/18';$('eFire').textContent=S.stats.fires+'/3';$('eRush').textContent=S.stats.rush+'/1';$('eBest').textContent='Best score: '+best.toLocaleString();ov('end')}
+function isPerfect(){const t=S.stats;return t.fires===3&&t.rush===1&&t.falsePulls===0&&(18-t.haz)+(3-t.first)<=1}
+function rankOf(s){return isPerfect()?'Fire Marshal':s>=3400?'Safety Pro':s>=1900?'Safety Rookie':'Needs Training'}
+function endGame(){S.phase='end';if(S.score>best){best=S.score;try{localStorage.setItem('condonFireBest',best)}catch(e){}}showBest();$('eScore').textContent=S.score.toLocaleString();$('eRank').textContent=rankOf(S.score);$('eHaz').textContent=S.stats.haz+'/18';$('eFire').textContent=S.stats.fires+'/3';$('eRush').textContent=S.stats.rush+'/1';$('eBest').textContent='Best score: '+best.toLocaleString();rewardEnd();ov('end')}
+// ---------- perfect-run reward ----------
+// OFF until Condon approves the offer. To turn it on: set approved:true AND host this file on condonfire.com,
+// where it posts to Condon's own request-service endpoint (same site). It never runs on github.io.
+const REWARD={approved:false,percent:5,endpoint:'/api/request-service',hosts:['condonfire.com','www.condonfire.com']};
+const rLive=REWARD.approved&&REWARD.hosts.includes(location.hostname);
+const rPreview=!rLive&&/[?&]rewardpreview=1(&|$)/.test(location.search);
+const RULE='That means all 3 fires out, the kitchen system pulled only for the real fire, and at most one slip: one missed hazard or one wrong extinguisher pick. No speed needed.';
+let rClaimedHere=false;try{rClaimedHere=localStorage.getItem('condonRewardClaimed')==='1'}catch(e){}
+const rSeen=new Set();let rSending=false,rId='';
+function rewardEnd(){const per=isPerfect(),pe=$('ePerfect'),bt=$('eReward');pe.style.display='none';bt.style.display='none';bt.disabled=false;pe.textContent='';
+ if(!rLive&&!rPreview){if(per)$('eBest').textContent='Near-perfect run \u00b7 '+$('eBest').textContent;return}
+ if(per){const b=document.createElement('b');b.textContent='Near-perfect safety run';pe.appendChild(b);pe.style.display='block'}
+ if(!per){pe.appendChild(document.createTextNode((rPreview?'Preview: ':'')+'Get a near-perfect run for 5% off. '+RULE));pe.style.display='block'}
+ if(per||rPreview){bt.style.display='block';
+  if(rLive&&rClaimedHere){bt.textContent='Reward already claimed on this device';bt.disabled=true}
+  else bt.textContent=rPreview?(per?'Preview: claim 5% off':'Preview the 5% reward screen'):'Claim 5% off'}}
+function rid(){const a=new Uint8Array(4);(crypto&&crypto.getRandomValues)?crypto.getRandomValues(a):a.forEach((_,i)=>a[i]=Math.random()*256);return 'FSG-'+Array.from(a,x=>x.toString(16).padStart(2,'0')).join('').toUpperCase()}
+function rOpen(){sfx.click();$('rPrev').style.display=rPreview?'block':'none';$('rForm').style.display='block';$('rDone').style.display='none';$('rMsg').textContent='';rId=rid();ov('reward')}
+function rDone(head,body){$('rMsg').textContent='';$('rForm').style.display='none';$('rDoneHead').textContent=head;$('rDoneBody').textContent=body;$('rDone').style.display='block';['rName','rEmail','rPhone'].forEach(k=>$(k).value='');$('rOk').checked=false}
+async function rSubmit(){if(rSending)return;const m=$('rMsg');const name=$('rName').value.trim(),email=$('rEmail').value.trim().toLowerCase();let phone=$('rPhone').value.replace(/\D/g,'');if(phone.length===11&&phone[0]==='1')phone=phone.slice(1);
+ if(name.length<2){m.textContent='Enter your name.';return}
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){m.textContent='Enter a valid email address.';return}
+ if(phone.length!==10){m.textContent='Enter a 10-digit phone number.';return}
+ if(!$('rOk').checked){m.textContent='Check the box so Condon can contact you to verify.';return}
+ const ph=phone.slice(0,3)+'-'+phone.slice(3,6)+'-'+phone.slice(6);
+ if(rPreview){if(rSeen.has('e:'+email)||rSeen.has('p:'+phone)){m.textContent='That email or phone already claimed the reward. One per customer.';return}
+  rSeen.add('e:'+email);rSeen.add('p:'+phone);sfx.win();rDone('Preview: request would go to Condon','In the live version this goes to Condon, who verifies the email and phone and applies 5% to the next service. Sample reward ID: '+rId+'. Nothing was sent or saved.');return}
+ if(!rLive||!isPerfect())return;
+ rSending=true;$('rSend').disabled=true;m.textContent='Sending...';
+ const message='Fire Safety Game reward claim: near-perfect run, '+REWARD.percent+'% off next service. Reward ID '+rId+'. Score '+S.score+'. One reward per customer: please check this email and phone have not claimed before, then confirm with the customer.';
+ try{const r=await fetch(REWARD.endpoint,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,phone:ph,email,message})});
+  let j={};try{j=await r.json()}catch(e){}
+  if(r.ok){rClaimedHere=true;try{localStorage.setItem('condonRewardClaimed','1')}catch(e){}sfx.win();rDone('Request sent to Condon','Condon will verify your email and phone, then take '+REWARD.percent+'% off your next service. Your reward ID is '+rId+'. Mention it when you book.')}
+  else m.textContent=(j&&typeof j.error==='string'&&j.error.length<160)?j.error:'Something went wrong. Please try again, or call 317-787-0472.'}
+ catch(e){m.textContent="We couldn't send that. Please try again, or call 317-787-0472."}
+ rSending=false;$('rSend').disabled=false}
+$('eReward').onclick=()=>{if(!$('eReward').disabled)rOpen()};
+$('rSend').onclick=rSubmit;
+['rName','rEmail','rPhone'].forEach(k=>$(k).addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();rSubmit()}}));
+$('rBack').onclick=()=>{sfx.click();if($('rDone').style.display==='block')rewardEnd();ov('end')};
 $('eShare').onclick=async()=>{const url=location.href.split('#')[0];const text='I scored '+S.score.toLocaleString()+' ('+rankOf(S.score)+') on the Condon Fire & Safety Fire Safety Challenge. Can you beat it?';try{if(navigator.share){await navigator.share({title:'Fire Safety Challenge',text,url});return}}catch(e){if(e&&e.name==='AbortError')return}try{await navigator.clipboard.writeText(text+' '+url);toastc('Copied! Paste it anywhere to share.')}catch(e){toastc(text+' '+url,5000)}};
 function toastc(t,ms){const el=$('toastc');el.textContent=t;el.style.display='block';clearTimeout(toastc.h);toastc.h=setTimeout(()=>el.style.display='none',ms||2200)}
 
@@ -278,7 +362,7 @@ function drawRush(){const r=S.rush;if(!r)return;for(const e of r.ev){if(e.age<0)
  else{const st=ST[e.type];let k=Math.min(1.35,.45+e.age*.22);if(e.done){if(!(e.out>0))continue;k*=Math.max(0,e.out)}glow(st.x,st.y-60,120*k,.5);for(let i=0;i<4;i++)flame(st.x-st.w/2+st.w*(i+.5)/4,st.y,(50+k*130)*(.75+.25*Math.sin(S.t*6+i*2)),st.w*.5,S.t,i*1.3)}}
  if(r.dis){const a=Math.min(1,r.dis.t);[100,230,372].forEach(x=>{X.globalAlpha=.45*a;X.fillStyle='#cfe8ff';X.beginPath();X.moveTo(x-5,208);X.lineTo(x+5,208);X.lineTo(x+55,400);X.lineTo(x-55,400);X.closePath();X.fill();if(Math.random()<.6)P({x:x+(Math.random()-.5)*80,y:390,vx:(Math.random()-.5)*30,vy:-10,r:6,grow:8,c:'#eef7ff',a:.8,life:1,max:1})});X.globalAlpha=1}}
 // ---------- scenes ----------
-const F=id=>S.found.has(id);
+const F=id=>S.found.has(id)||!HZ().some(h=>h.id===id);
 function emerLight(x,y,broken){fr(x-46,y-30,92,12,3,'#cfcfc9');circ(x-36,y-24,2.5,'#777');circ(x+36,y-24,2.5,'#777');
  if(!broken){fr(x-46,y-18,92,30,5,'#f4f4f2');X.strokeStyle='#aaa';X.lineWidth=2;rr(x-46,y-18,92,30,5);X.stroke();T('EMERGENCY',x-4,y-3,11,RED,'center');circ(x+38,y-3,3,'#2ecc40');[-28,28].forEach(dx=>{fr(x+dx-14,y+12,28,18,7,'#e9e9e6');X.strokeStyle='#aaa';X.lineWidth=1.5;rr(x+dx-14,y+12,28,18,7);X.stroke();circ(x+dx,y+26,9,'#fff6c0')});return}
  X.lineCap='round';X.strokeStyle='#d22';X.lineWidth=3;X.beginPath();X.moveTo(x-30,y-18);X.quadraticCurveTo(x-38,y+20,x-26,y+40);X.stroke();X.strokeStyle='#222';X.beginPath();X.moveTo(x-20,y-18);X.quadraticCurveTo(x-14,y+14,x-14,y+38);X.stroke();X.lineCap='butt';
@@ -297,8 +381,9 @@ function suppCab(fired){X.save();X.translate(492-556*.8,30-64*.8);X.scale(.8,.8)
  line(676,192,680,204,'#888',1.5);fr(666,204,26,40,3,'#fff');rect(666,204,26,9,RED);T('C',679,209,7,'#fff','center');T(fired?'!':'OK',679,228,12,fired?'#d11':GREEN,'center');
  if(fired){fr(560,268,144,26,4,'#d11');T('NEEDS RECHARGE',632,281,13,'#fff','center')}X.restore()}
 function box(x,y,w,h,c){fr(x,y,w,h,3,c||'#c49a62');rect(x,y+h*.42,w,h*.12,'rgba(0,0,0,.08)');rect(x+w*.45,y,w*.1,h,'rgba(255,255,255,.18)');X.strokeStyle='rgba(0,0,0,.25)';X.lineWidth=1.5;rr(x,y,w,h,3);X.stroke()}
+function smokeDet(x,y,covered){circ(x,y,17,'#e6e6e2');circ(x,y,13,'#f7f7f4');circ(x,y,3,'#2fa34a');if(covered){X.fillStyle='rgba(235,240,245,.82)';X.beginPath();X.moveTo(x-26,y-24);X.lineTo(x+26,y-24);X.quadraticCurveTo(x+34,y+10,x+18,y+28);X.lineTo(x-18,y+28);X.quadraticCurveTo(x-34,y+10,x-26,y-24);X.fill();X.strokeStyle='rgba(140,150,160,.9)';X.lineWidth=2;X.stroke();line(x-12,y+4,x-4,y+24,'rgba(140,150,160,.7)',2);line(x+10,y+2,x+6,y+24,'rgba(140,150,160,.7)',2);rect(x-28,y-20,56,9,'#e2b11a');rect(x-28,y-20,56,2,'#c99a10')}}
 function poster(x,y,w,h){fr(x,y,w,h,4,'#fff');X.strokeStyle='#ccc';X.lineWidth=2;rr(x,y,w,h,4);X.stroke();rect(x,y,w,8,RED);if(logo.complete&&logo.naturalWidth){const lw=w-16;X.drawImage(logo,x+8,y+16,lw,lw*logo.naturalHeight/logo.naturalWidth)}T('INSPECTED.',x+w/2,y+h-52,15,CHAR,'center');T('PROTECTED.',x+w/2,y+h-36,15,RED,'center');T(PHONE,x+w/2,y+h-16,12,'#555','center',600)}
-function drawOffice(){rect(0,0,W,560,'#E8E4DA');rect(0,0,W,26,'#F6F4EF');rect(0,26,W,3,'#CFC9BB');circ(250,40,11,'#f3f3f3');circ(250,40,3,'#d33');
+function drawOffice(){rect(0,0,W,560,'#E8E4DA');rect(0,0,W,26,'#F6F4EF');rect(0,26,W,3,'#CFC9BB');smokeDet(250,44,!F('det'));
  X.fillStyle=lg(0,560,0,800,['#7C8794','#5E6874']);X.fillRect(0,560,W,240);X.strokeStyle='rgba(255,255,255,.06)';X.lineWidth=2;for(let i=0;i<10;i++){line(0,580+i*24,W,580+i*24,'rgba(255,255,255,.05)',2)}rect(0,552,W,10,'#BDB6A6');
  // window
  fr(36,66,190,200,4,'#cfc8b8');X.fillStyle=lg(0,74,0,258,['#7fb2e5','#cfe5f7']);X.fillRect(44,74,174,184);X.fillStyle='#8a97a6';[[50,190,22,68],[74,160,28,98],[104,205,20,53],[126,140,24,118],[152,178,30,80],[184,200,30,58]].forEach(b=>X.fillRect(b[0],b[1],b[2],b[3]));rect(129,74,4,184,'#cfc8b8');rect(44,164,174,4,'#cfc8b8');
@@ -312,6 +397,8 @@ function drawOffice(){rect(0,0,W,560,'#E8E4DA');rect(0,0,W,26,'#F6F4EF');rect(0,
  // power strips
  line(66,522,80,600,'#222',3);fr(60,512,16,20,2,'#f1efe9');
  if(!F('strips')){glow(195,604,90,.3);fr(78,594,74,18,4,'#f2f2f2');fr(160,600,74,18,4,'#f2f2f2');fr(242,594,74,18,4,'#f2f2f2');line(152,603,160,609,'#222',5);line(234,609,242,603,'#222',5);[86,102,118,134,168,184,200,216,250,266,282,298].forEach((x,i)=>{const yy=(i>3&&i<8)?596:590;rect(x,yy,10,10,'#222');line(x+5,yy,x+5+(i%3-1)*16,552,'#222',2.5)});circ(146,603,3.5,'#ff3b3b');circ(228,609,3.5,'#ff3b3b');circ(310,603,3.5,'#ff3b3b')}else{fr(80,598,70,14,4,'#f2f2f2');[92,110,128].forEach(x=>rect(x,594,8,8,'#222'));circ(141,605,3,'#e33')}
+ // trash can + space heater
+  fr(540,640,56,82,5,'#6d747c');rect(536,634,64,10,'#5a6168');  if(!F('heatO')){X.fillStyle='#fbfbfb';[[548,630,14],[566,624,16],[584,630,13],[556,616,12],[578,612,11]].forEach(([a,b,r])=>{X.beginPath();X.arc(a,b,r,0,7);X.fill()});X.strokeStyle='#ccc';X.lineWidth=1.5;[[548,630,14],[566,624,16],[584,630,13]].forEach(([a,b,r])=>{X.beginPath();X.arc(a,b,r*.6,0,4);X.stroke()});glow(492,680,70,.38);fr(462,644,64,82,6,'#3a3e43');for(let i=0;i<4;i++)rect(470,656+i*14,48,6,'#ff7a1a');rect(466,726,56,6,'#222');fr(526,700,16,8,3,'#fbfbfb')}
  // plant
  fr(374,500,42,56,6,'#a45a3b');X.fillStyle='#3f8f4f';for(let i=0;i<7;i++){X.beginPath();X.ellipse(395+(i-3)*8,486-Math.abs(i-3)*4,8,22,(i-3)*.35,0,7);X.fill()}
  // extinguishers
@@ -328,12 +415,13 @@ function drawKitchen(){rect(0,0,W,600,'#F1F1EC');X.strokeStyle='#dcdcd4';X.lineW
  // hood
  if(!F('boxes')){box(96,4,80,60);box(170,18,64,46,'#b88c55');T('PAPER',136,40,13,'rgba(120,40,20,.6)','center')}
  X.fillStyle=lg(0,60,0,200,['#d9dde1','#aab1b8']);X.beginPath();X.moveTo(30,62);X.lineTo(470,62);X.lineTo(482,200);X.lineTo(18,200);X.closePath();X.fill();rect(18,196,464,8,'#8f969d');
- for(let i=0;i<7;i++){const x=42+i*61;rect(x,134,54,58,'#9aa1a8');for(let j=0;j<5;j++)rect(x+3+j*10.5,136,6,54,'#7d848b')}
+ for(let i=0;i<7;i++){const x=42+i*61;rect(x,134,54,58,'#9aa1a8');for(let j=0;j<5;j++)rect(x+3+j*10.5,136,6,54,'#7d848b')}if(!F('filter')){rect(42,134,54,58,'#1f1d1a');X.fillStyle='rgba(120,80,20,.95)';for(let k=0;k<4;k++){X.fillRect(46+k*13,134,6,10+((k*7)%13));X.beginPath();X.arc(49+k*13,146+((k*7)%13),3.2,0,7);X.fill()}X.strokeStyle='#e3402a';X.lineWidth=3;X.setLineDash([6,4]);X.strokeRect(40,132,58,62);X.setLineDash([])}
  if(!F('grease')){for(let i=0;i<4;i++){const x=166+i*61;X.fillStyle='rgba(92,56,12,.9)';X.fillRect(x,140,54,52);for(let j=0;j<3;j++){const dx=x+9+j*17,len=10+((i+j)%3)*7;fr(dx-3,194,6,len,3,'rgba(92,56,12,.92)');X.beginPath();X.ellipse(dx,194+len,4.5,5.5,0,0,7);X.fill()}}X.fillStyle='rgba(92,56,12,.35)';X.fillRect(160,200,250,6)}
  T('HOOD SUPPRESSION',250,86,13,'#6b7279','center');line(20,205,480,205,'#7d848b',3);[100,230,372].forEach(x=>{rect(x-3,205,6,10,'#555');circ(x,216,4,'#333')});
  // fryer
  X.fillStyle=lg(40,0,160,0,['#9aa1a8','#e3e6e9','#a5acb3']);X.fillRect(40,404,120,196);rect(48,396,104,16,'#6a4d12');rect(50,398,100,8,'#b7892e');rect(70,350,4,50,'#333');rect(120,350,4,50,'#333');rect(66,346,12,6,'#222');rect(116,346,12,6,'#222');rect(52,440,96,6,'#888');circ(70,470,6,'#333');circ(130,470,6,'#333');
  // broiler
+  if(!F('trash')){X.save();X.translate(196,604);X.rotate(-.18);fr(4,-24,40,30,2,'#c49a62');X.restore();X.save();X.translate(232,598);X.rotate(.22);fr(0,-26,34,34,2,'#b88c55');X.restore();fr(196,624,66,92,6,'#5d646b');rect(192,618,74,10,'#4a5056');X.fillStyle='#fbfbfb';[[210,614,12],[244,612,13],[228,604,10]].forEach(([a,b,r])=>{X.beginPath();X.arc(a,b,r,0,7);X.fill()});fr(178,700,22,10,3,'#c49a62');fr(258,708,18,9,3,'#fbfbfb')}
  X.fillStyle=lg(170,0,290,0,['#9aa1a8','#e3e6e9','#a5acb3']);X.fillRect(170,404,120,196);rect(176,392,108,14,'#2a2a2a');for(let i=0;i<9;i++)rect(180+i*12,394,6,10,'#555');X.fillStyle='rgba(255,90,20,.6)';X.fillRect(180,404,100,4);rect(180,430,100,40,'#555');[200,230,260].forEach(x=>circ(x,500,6,'#333'));
  // range
  X.fillStyle=lg(300,0,460,0,['#9aa1a8','#e3e6e9','#a5acb3']);X.fillRect(300,404,160,196);rect(300,398,160,10,'#2b2b2b');fr(312,380,60,16,4,'#3b3b3b');rect(372,384,30,5,'#3b3b3b');rect(410,393,44,5,'#222');for(let i=0;i<5;i++){const fx=414+i*9,fh=13+3*Math.sin(S.t*11+i*1.7);X.fillStyle='#3d7bff';X.beginPath();X.moveTo(fx-4,396);X.quadraticCurveTo(fx,396-fh*1.3,fx+4,396);X.fill();X.fillStyle='#bfe0ff';X.beginPath();X.moveTo(fx-2,396);X.quadraticCurveTo(fx,396-fh*.7,fx+2,396);X.fill()}rect(316,450,128,80,'#7d848b');rect(326,460,108,10,'#555');[320,350,380,410,440].forEach(x=>circ(x,425,6,'#222'));
@@ -371,13 +459,15 @@ function drawShop(){X.fillStyle=lg(0,0,0,500,['#97a3ad','#7f8b95']);X.fillRect(0
  if(!F('smoke')){X.fillStyle='#333';X.beginPath();X.ellipse(448,428,22,7,0,0,7);X.fill();X.save();X.translate(440,424);X.rotate(-.12);fr(0,-4,34,8,3,'#fafafa');rect(0,-4,9,8,'#e0a050');X.restore();glow(474,420,24,.75);circ(474,420,4.5,'#ff5a1a');X.strokeStyle='rgba(225,225,225,.9)';X.lineWidth=3;X.lineCap='round';X.beginPath();X.moveTo(474,414);for(let k=1;k<6;k++)X.lineTo(474+Math.sin(S.t*2+k)*7,414-k*12);X.stroke();X.lineCap='butt'}
  // ext + door
  ext(530,300,{s:.95,tag:1});
- rect(570,256,124,244,'#6c747c');rect(578,264,108,236,'#a9b0b6');rect(590,370,84,8,'#777');exitSign(632,222,true);
+ rect(570,256,124,244,'#6c747c');rect(578,264,108,236,'#a9b0b6');rect(590,370,84,8,'#777');exitSign(632,222,F('exitlt'));
  if(!F('exitb')){box(560,400,136,40,'#a37a4c');box(566,440,124,40,'#b58b5a');box(556,480,144,40,'#a37a4c')}
  // rags
  if(!F('rags')){rect(302,566,56,66,'#8a9096');rect(298,562,64,8,'#6c727a');X.fillStyle='#d9b38c';X.beginPath();X.ellipse(330,556,34,15,0,0,7);X.fill();[[314,552,12,7,.4,'#6b4a2a'],[344,548,12,9,-.3,'#b07a48'],[330,542,11,7,0,'#5a3a1a'],[352,560,9,6,.2,'#4a3018'],[310,562,8,5,-.2,'#8a5a30']].forEach(([x,y,a,b,r,c])=>{X.fillStyle=c;X.beginPath();X.ellipse(x,y,a,b,r,0,7);X.fill()});X.strokeStyle='rgba(110,110,110,.65)';X.lineWidth=2.5;X.lineCap='round';for(let k=0;k<3;k++){X.beginPath();X.moveTo(318+k*12,534);X.quadraticCurveTo(312+k*12+Math.sin(S.t*3+k)*5,522,320+k*12,510);X.stroke()}X.lineCap='butt'}else{rect(306,566,48,62,RED);fr(302,556,56,12,4,'#a01818');T('OILY',330,590,12,'#fff','center');T('WASTE',330,604,12,'#fff','center')}
  // cans + heater
  [[404,620,'#2f6fd0'],[436,626,'#e2b11a'],[468,618,'#9aa1a8']].forEach(([x,y,c])=>{fr(x,y,28,40,3,c);fr(x+3,y+10,22,18,2,'#fff');X.fillStyle='#d11';X.beginPath();X.moveTo(x+14,y+11);X.lineTo(x+23,y+19);X.lineTo(x+14,y+27);X.lineTo(x+5,y+19);X.closePath();X.fill();rect(x+3,y-4,22,5,'#777')});
  const hx=F('heater')?230:530;fr(hx-24,580,48,74,6,'#3a3e43');for(let i=0;i<4;i++)rect(hx-16,592+i*12,32,5,F('heater')?'#555':'#ff7a1a');if(!F('heater'))glow(hx,620,60,.35);rect(hx-20,654,40,6,'#222');
+ // gas can (open, no cap)
+  if(!F('gascan')){fr(72,690,58,62,6,'#d23a2a');rect(72,702,58,4,'#a92a1d');T('GAS',101,728,15,'#ffd54a','center');fr(84,680,30,10,3,'#a92a1d');X.save();X.translate(126,690);X.rotate(-.6);fr(-4,-26,10,28,2,'#e2b11a');X.restore();circ(150,758,7,'#e2b11a');X.strokeStyle='rgba(120,150,90,.75)';X.lineWidth=3;for(let k=0;k<3;k++){const ox=140+k*9,ph=S.t*3+k;X.beginPath();X.moveTo(ox,664);X.bezierCurveTo(ox+10*Math.sin(ph),648,ox-10*Math.sin(ph),634,ox+4,618);X.stroke()}}
  // damaged cord on the floor
  X.lineCap='round';X.strokeStyle='#1d1d1d';X.lineWidth=6;X.beginPath();X.moveTo(726,690);X.quadraticCurveTo(690,676,664,704);X.stroke();X.beginPath();X.moveTo(616,724);X.quadraticCurveTo(596,744,566,738);X.stroke();
  if(!F('cord')){X.lineWidth=3;[['#b87333',-3],['#d4a017',0],['#b87333',3]].forEach(([c,o])=>{X.strokeStyle=c;X.beginPath();X.moveTo(664,704+o);X.quadraticCurveTo(640,704+o*3,616,724+o);X.stroke()});if(Math.sin(S.t*13)>-.3){glow(640,712,34,.6);for(let k=0;k<6;k++){const a=k*1.05+S.t*4;line(640,712,640+Math.cos(a)*17,712+Math.sin(a)*17,'#ffe14a',2.5)}}}
@@ -404,9 +494,9 @@ function inPanel(p){return LAND?p.x>=SIDE.x&&p.y>SIDE.head:p.y>PY}
 // hit test: inside the hazard's box, or within its (generous) circle
 function hitD(z,x,y){if(z.hb&&x>=z.hb[0]&&x<=z.hb[2]&&y>=z.hb[1]&&y<=z.hb[3])return 0;const d=Math.hypot(x-z.x,y-z.y);return d<Math.max(z.r,46)*1.2?d:1e9}
 function tap(p){const ph=S.phase;
- if(ph==='spot'&&inScene(p)){const l=lv(),sy=p.y-HUD;let h=null,bd=1e9;for(const z of l.hazards){if(S.found.has(z.id))continue;const d=hitD(z,p.x,sy);if(d<bd){bd=d;h=z}}
-  if(h){S.found.add(h.id);S.stats.haz++;S.idle=0;sfx.good();add(100+Math.round(S.time*3),h.x,h.y+HUD-h.r);S.toast={title:h.label,body:h.tip,good:true};if(S.found.size===l.hazards.length)endSpot()}
-  else if(!l.hazards.some(z=>S.found.has(z.id)&&hitD(z,p.x,sy)<1e9)){sfx.bad();add(-20,p.x,p.y);S.marks.push({x:p.x,y:sy,t:.8})}}
+ if(ph==='spot'&&inScene(p)){const l=lv(),sy=p.y-HUD;let h=null,bd=1e9;for(const z of HZ()){if(S.found.has(z.id))continue;const d=hitD(z,p.x,sy);if(d<bd){bd=d;h=z}}
+  if(h){S.found.add(h.id);S.stats.haz++;S.idle=0;sfx.good();add(100+Math.round(S.time*3),h.x,h.y+HUD-h.r);S.toast={title:h.label,body:h.tip,good:true};if(S.found.size===HZ().length)endSpot()}
+  else if(!HZ().some(z=>S.found.has(z.id)&&hitD(z,p.x,sy)<1e9)){sfx.bad();add(-20,p.x,p.y);S.marks.push({x:p.x,y:sy,t:.8})}}
  else if(ph==='pick'&&inPanel(p)){let i;if(LAND){const c=Math.floor((p.x-SIDE.x-14)/236),r=Math.floor((p.y-SIDE.head-20)/310);i=(c>=0&&c<2&&r>=0&&r<2)?r*2+c:-1}else i=Math.floor(p.x/(W/4));if(EXT[i])pick(EXT[i].id)}
  else if(ph==='pull'){if(Math.hypot(p.x-PIN.x,p.y-PIN.y)<70||inPanel(p)){S.pass.p=1;sfx.pin();S.phase='spray';S.agent=1;setMsg('Hold to SQUEEZE. AIM low at the base and SWEEP side to side.',true,99);P({x:PIN.x,y:PIN.y,vx:160,vy:-260,g:700,r:6,c:'#ddd',life:1,max:1})}}
  else if(ph==='spray'&&inScene(p)){if(S.agent>0){S.ptr.down=true;S.pass.s=1;sprayOn(true)}}
@@ -430,9 +520,9 @@ function emitSpray(){const ox=360,oy=SH-10,tx=S.ptr.x,ty=Math.min(S.ptr.y-HUD,SH
 function render(){X.setTransform(dpr*scale,0,0,dpr*scale,0,0);X.clearRect(0,0,CW,CH);const l=lv();
  X.save();if(S.shake>0&&!matchMedia('(prefers-reduced-motion: reduce)').matches)X.translate((Math.random()-.5)*10,(Math.random()-.5)*10);
  X.save();X.translate(0,HUD);X.beginPath();X.rect(0,0,W,SH);X.clip();SCENES[l.key]();
- if(S.phase!=='title'){for(const z of l.hazards)if(S.found.has(z.id)){X.lineWidth=4;X.strokeStyle=GREEN;X.beginPath();X.arc(z.x,z.y,z.r*.85,0,7);X.stroke();circ(z.x+z.r*.6,z.y-z.r*.6,13,GREEN);X.strokeStyle='#fff';X.lineWidth=3;X.beginPath();X.moveTo(z.x+z.r*.6-6,z.y-z.r*.6);X.lineTo(z.x+z.r*.6-1,z.y-z.r*.6+5);X.lineTo(z.x+z.r*.6+7,z.y-z.r*.6-5);X.stroke()}
+ if(S.phase!=='title'){for(const z of HZ())if(S.found.has(z.id)){X.lineWidth=4;X.strokeStyle=GREEN;X.beginPath();X.arc(z.x,z.y,z.r*.85,0,7);X.stroke();circ(z.x+z.r*.6,z.y-z.r*.6,13,GREEN);X.strokeStyle='#fff';X.lineWidth=3;X.beginPath();X.moveTo(z.x+z.r*.6-6,z.y-z.r*.6);X.lineTo(z.x+z.r*.6-1,z.y-z.r*.6+5);X.lineTo(z.x+z.r*.6+7,z.y-z.r*.6-5);X.stroke()}
   if(S.phase==='reveal'||(S.missed.length&&S.phase!=='spot')){for(const z of S.missed){X.setLineDash([8,6]);X.lineWidth=4;X.strokeStyle='#e11';X.beginPath();X.arc(z.x,z.y,z.r*.85,0,7);X.stroke();X.setLineDash([]);if(S.phase==='reveal'){X.font='800 16px "Barlow Condensed",sans-serif';const tw=X.measureText(z.label).width+16;const lx=Math.max(tw/2+4,Math.min(W-tw/2-4,z.x));fr(lx-tw/2,z.y+z.r*.85+4,tw,24,5,'#e11');T(z.label,lx,z.y+z.r*.85+16,16,'#fff','center')}}}
-  if(S.phase==='spot'&&S.idle>6){const z=l.hazards.find(z=>!S.found.has(z.id));if(z){const a=Math.min(1,(S.idle-6)/1.5),k=.5+.5*Math.sin(S.t*5);X.globalAlpha=a*(.35+.45*k);X.strokeStyle='#ffd23f';X.lineWidth=5;X.setLineDash([12,9]);X.beginPath();X.arc(z.x,z.y,z.r*(.95+.12*k),0,7);X.stroke();X.setLineDash([]);X.globalAlpha=1}}
+  if(S.phase==='spot'&&S.idle>6){const z=HZ().find(z=>!S.found.has(z.id));if(z){const a=Math.min(1,(S.idle-6)/1.5),k=.5+.5*Math.sin(S.t*5);X.globalAlpha=a*(.35+.45*k);X.strokeStyle='#ffd23f';X.lineWidth=5;X.setLineDash([12,9]);X.beginPath();X.arc(z.x,z.y,z.r*(.95+.12*k),0,7);X.stroke();X.setLineDash([]);X.globalAlpha=1}}
   for(const m of S.marks){X.globalAlpha=m.t/.8;X.strokeStyle='#e11';X.lineWidth=5;line(m.x-12,m.y-12,m.x+12,m.y+12,'#e11',5);line(m.x+12,m.y-12,m.x-12,m.y+12,'#e11',5);X.globalAlpha=1}}
  drawRush();drawFire();drawParts();
  if(S.phase==='spray'||(S.phase==='out'&&S.fire)){const a=Math.atan2(S.ptr.y-HUD-(SH-10),S.ptr.x-360);X.save();X.translate(360,SH-10);X.rotate(a);fr(-6,-9,46,18,6,'#151515');fr(36,-11,12,22,3,'#222');X.restore();fr(330,SH-30,60,40,10,'#1d1d1d')}
@@ -454,7 +544,7 @@ function drawHUD(){const l=lv(),logoOK=logo.complete&&logo.naturalWidth;
 function stationPulse(x,y,w,h){if(S.sysFired)return;const k=.5+.5*Math.sin(S.t*6);X.strokeStyle=`rgba(255,220,60,${.25+.55*k})`;X.lineWidth=4;rr(x,y,w,h,14);X.stroke()}
 function drawPanel(){const ph=S.phase,l=lv();
  if(LAND){const x0=SIDE.x,y0=SIDE.head,w=SIDE.w,cx=x0+w/2;rect(x0,y0,w,CH-y0,CHAR);
-  if(ph==='spot'||ph==='reveal'){T('HAZARDS '+S.found.size+'/'+l.hazards.length,x0+28,y0+42,28,'#fff');for(let i=0;i<l.hazards.length;i++)circ(x0+262+i*32,y0+42,10,i<S.found.size?'#2ecc40':'#555');const t=S.toast;if(t){T(t.title,x0+28,y0+100,t.good?30:28,t.good?'#7CFC9A':'#fff');wrap(t.body,x0+28,y0+146,w-56,34,24,'#ddd')}if(ph==='spot')wrap('Stuck? Wait a few seconds and a yellow ring will point you to one.',x0+28,y0+590,w-56,26,18,'#8d9196')}
+  if(ph==='spot'||ph==='reveal'){T('HAZARDS '+S.found.size+'/'+HZ().length,x0+28,y0+42,28,'#fff');for(let i=0;i<HZ().length;i++)circ(x0+262+i*32,y0+42,10,i<S.found.size?'#2ecc40':'#555');const t=S.toast;if(t){T(t.title,x0+28,y0+100,t.good?30:28,t.good?'#7CFC9A':'#fff');wrap(t.body,x0+28,y0+146,w-56,34,24,'#ddd')}if(ph==='spot')wrap('Stuck? Wait a few seconds and a yellow ring will point you to one.',x0+28,y0+590,w-56,26,18,'#8d9196')}
   else if(ph==='pick'){for(let i=0;i<4;i++){const c=i%2,r=Math.floor(i/2),bx=x0+14+c*236,by=y0+20+r*310,ccx=bx+113;fr(bx,by,226,300,14,'#33363b');ext(ccx,by+16,{s:1.55,type:EXT[i].id});T(EXT[i].name,ccx,by+232,EXT[i].name.length>8?22:28,'#fff','center');T(EXT[i].cls,ccx,by+266,20,'#ffb3ad','center',600)}}
   else if(ph==='pull'){ext(cx,y0+80,{s:1.5,type:S.pickedExt});const k=.5+.5*Math.sin(S.t*8);X.strokeStyle=`rgba(255,220,60,${.5+k*.5})`;X.lineWidth=4;X.beginPath();X.arc(PIN.x,PIN.y,24+k*7,0,7);X.stroke();T('P \u00b7 PULL',cx,y0+340,52,'#ffdc3c','center');T('Tap the pin to pull it',cx,y0+396,26,'#ddd','center',600);T('It breaks the tamper seal',cx,y0+436,19,'#aaa','center',600)}
   else if(ph==='spray'||ph==='out'){const st=[['P','Pull',S.pass.p],['A','Aim',S.pass.a],['S','Squeeze',S.pass.s],['S','Sweep',S.pass.w]];st.forEach(([a,b,on],i)=>{const x=x0+70+i*120;fr(x-50,y0+30,100,96,12,on?GREEN:'#3b3e44');T(a,x,y0+68,44,'#fff','center');T(b.toUpperCase(),x,y0+108,17,'#fff','center',600)});T('AGENT',x0+28,y0+182,20,'#fff');fr(x0+28,y0+200,w-56,30,8,'#444');fr(x0+28,y0+200,(w-56)*S.agent,30,8,S.agent<.25?'#ff3b2f':'#f7f3e6');wrap('Hold to spray. Sweep low across the base of the flames.',x0+28,y0+290,w-56,32,24,'#ccc')}
@@ -462,7 +552,7 @@ function drawPanel(){const ph=S.phase,l=lv();
   else{T('CONDON FIRE & SAFETY',cx,y0+290,34,'#fff','center');T('Indianapolis \u00b7 '+PHONE,cx,y0+330,22,'#bbb','center',600)}
   return}
  const y=PY;rect(0,y,W,CH-y,CHAR);rect(0,y,W,4,'#111');
- if(ph==='spot'||ph==='reveal'||ph==='card'||ph==='title'||ph==='end'){if(ph==='spot'||ph==='reveal'){T('HAZARDS '+S.found.size+'/'+l.hazards.length,24,y+28,22,'#fff');for(let i=0;i<l.hazards.length;i++)circ(200+i*24,y+28,8,i<S.found.size?'#2ecc40':'#555')}const t=S.toast;if(t&&(ph==='spot'||ph==='reveal')){T(t.title,24,y+66,t.good?26:24,t.good?'#7CFC9A':'#fff');wrap(t.body,24,y+100,670,26,20,'#ddd')}else if(ph!=='spot'&&ph!=='reveal'){T('CONDON FIRE & SAFETY',W/2,y+60,30,'#fff','center');T('Indianapolis \u00b7 '+PHONE,W/2,y+96,20,'#bbb','center',600)}}
+ if(ph==='spot'||ph==='reveal'||ph==='card'||ph==='title'||ph==='end'){if(ph==='spot'||ph==='reveal'){T('HAZARDS '+S.found.size+'/'+HZ().length,24,y+28,22,'#fff');for(let i=0;i<HZ().length;i++)circ(200+i*24,y+28,8,i<S.found.size?'#2ecc40':'#555')}const t=S.toast;if(t&&(ph==='spot'||ph==='reveal')){T(t.title,24,y+66,t.good?26:24,t.good?'#7CFC9A':'#fff');wrap(t.body,24,y+100,670,26,20,'#ddd')}else if(ph!=='spot'&&ph!=='reveal'){T('CONDON FIRE & SAFETY',W/2,y+60,30,'#fff','center');T('Indianapolis \u00b7 '+PHONE,W/2,y+96,20,'#bbb','center',600)}}
  else if(ph==='pick'){for(let i=0;i<4;i++){const cx=W/8+i*W/4;fr(cx-80,y+10,160,CH-y-20,12,'#33363b');ext(cx,y+18,{s:1.05,type:EXT[i].id});T(EXT[i].name,cx,y+150,EXT[i].name.length>8?17:21,'#fff','center');T(EXT[i].cls,cx,y+172,15,'#ffb3ad','center',600)}}
  else if(ph==='pull'){ext(360,y+22,{s:1.3,type:S.pickedExt});const k=.5+.5*Math.sin(S.t*8);X.strokeStyle=`rgba(255,220,60,${.5+k*.5})`;X.lineWidth=4;X.beginPath();X.arc(PIN.x,PIN.y,22+k*6,0,7);X.stroke();T('P \u00b7 PULL',40,y+70,40,'#ffdc3c');wrap('Tap the pin to pull it',40,y+112,220,26,20,'#ddd');T('Breaks the tamper seal',W-40,y+90,18,'#aaa','right',600)}
  else if(ph==='spray'||ph==='out'){const st=[['P','Pull',S.pass.p],['A','Aim',S.pass.a],['S','Squeeze',S.pass.s],['S','Sweep',S.pass.w]];st.forEach(([a,b,on],i)=>{const x=60+i*110;fr(x-44,y+16,88,84,12,on?GREEN:'#3b3e44');T(a,x,y+48,40,'#fff','center');T(b.toUpperCase(),x,y+84,15,'#fff','center',600)});T('AGENT',500,y+30,18,'#fff');fr(500,y+46,196,26,8,'#444');fr(500,y+46,196*S.agent,26,8,S.agent<.25?'#ff3b2f':'#f7f3e6');wrap('Hold to spray. Sweep low across the base of the flames.',30,y+136,660,24,19,'#ccc')}
@@ -471,7 +561,7 @@ function drawPanel(){const ph=S.phase,l=lv();
 function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;if(!paused){update(dt);render()}requestAnimationFrame(loop)}
 requestAnimationFrame(loop);
 // test hooks
-window.CG={S,LEVELS,toScreen(x,y){const r=C.getBoundingClientRect();return{x:r.left+x/CW*r.width,y:r.top+y/CH*r.height}},get pin(){return PIN},get HUD(){return HUD},get PY(){return PY},get LAND(){return LAND},get CW(){return CW},get CH(){return CH},SIDE,hitD,render};
+window.CG={S,LEVELS,rollHazards,isPerfect,rewardEnd,endGame,toScreen(x,y){const r=C.getBoundingClientRect();return{x:r.left+x/CW*r.width,y:r.top+y/CH*r.height}},get pin(){return PIN},get HUD(){return HUD},get PY(){return PY},get LAND(){return LAND},get CW(){return CW},get CH(){return CH},SIDE,hitD,render};
 })();
 </script>
 </body>
