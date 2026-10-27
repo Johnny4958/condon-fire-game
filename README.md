@@ -6,24 +6,21 @@ Play: https://johnny4958.github.io/condon-fire-game/
 
 The game lays itself out in landscape with a sidebar on laptops and in portrait on phones.
 
-Each game picks 6 hazards per room at random from a set of 8 (the office always keeps the power strips, since that's where its fire starts), so players can't just memorize where to tap.
+Each game picks 6 hazards per room at random from a set of 10 (the office always keeps the power strips and the paint shop always keeps the booth filters, since that's where their fires start), so players can't just memorize where to tap. The set includes an extinguisher left on the floor under its empty hook (it can land on different hooks in the office) and an extinguisher used as a doorstop. A game never shows the same picks twice in a row.
 
-## Top-score reward (off until Condon approves it)
+## Top-score reward (on)
 
-The 5% reward takes a near-perfect run: all 3 fires out, the kitchen system pulled only for the real fire, and at most one slip in the whole game (one missed hazard out of 18, or one wrong extinguisher pick out of 3). Speed doesn't count. A near-perfect run is the only way to earn the Fire Marshal rank.
+The 5% reward takes a score of 6,000 or more in one game (6,000 exactly counts). To change the cutoff, edit `minScore:6000` in the `REWARD` settings in `index.html`.
 
-The 5% reward is built but switched off. While it's off, players never see an offer. To see the reward screen as a demo, open the game with `?rewardpreview=1` on the end of the address. Preview mode is clearly labeled and sends and saves nothing.
+The end screen shows the score only, with no rank or tier names.
 
-To turn it on, once Condon approves the offer:
+The 5% reward is switched on. To turn it off, change `approved:true` to `approved:false` in the `REWARD` settings in `index.html`. While it's off, players never see an offer, and `?rewardpreview=1` on the end of the address shows a labeled sample.
 
-1. In `index.html`, change `approved:false` to `approved:true` in the `REWARD` settings.
-2. Host `index.html` on condonfire.com itself. An iframe that loads it from github.io won't work.
+When it's on, a score of 6,000 or more shows a button that opens a reward code (like `FSG-1A2B3C4D`). The player mentions it when booking. The game doesn't ask for or send any contact info.
 
-When it's on, a near-perfect run shows a Claim button. The player enters name, email and phone and checks a consent box, and the game posts `{name, phone, email, message}` to Condon's own `/api/request-service` endpoint, the same one that handles the site's Request Service form. The message includes the reward ID and score. Nothing about the player is stored in this repo, in the address bar, or in the browser except a "claimed on this device" flag.
+What "one per customer" means here: the game gives each device one code and shows the same code again on replays. Condon's staff does the real check before taking 5% off, by confirming the customer hasn't used the reward before. Clearing the browser or switching devices gets a new code, and the score is calculated in the browser, so staff verification is the actual safeguard.
 
-What "one per customer" really means here: the game blocks a second claim on the same device, and the email and phone checks only confirm the format. Condon's staff does the real check before taking 5% off, by looking for that email or phone in earlier claims and confirming with the customer. The score is calculated in the browser, so someone technical could fake one; staff verification is the actual safeguard.
-
-If you want the website to block repeat claims automatically, Condon's site needs its own endpoint that looks up the email and phone, refuses repeats, and sends back a single-use code. Then point `REWARD.endpoint` at that endpoint.
+Collecting email and phone to track claims is on hold until Condon decides what they want.
 
 ## Embed on a website
 
