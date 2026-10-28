@@ -3,6 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-title" content="Fire Safety">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Fire Safety Challenge | Condon Fire &amp; Safety</title>
 <meta name="description" content="Spot the hazards, grab the right extinguisher and knock down the fire. A free fire safety game from Condon Fire &amp; Safety in Indianapolis.">
 <meta property="og:title" content="Fire Safety Challenge | Condon Fire &amp; Safety">
@@ -47,6 +55,8 @@ p{font-size:calc(var(--u)*4.1);line-height:1.35;margin:calc(var(--u)*2) 0}
 .small{font-size:calc(var(--u)*3.1);color:#6b6a66;margin:calc(var(--u)*2.5) 0 0;line-height:1.35}
 .cta .small{color:#b9b7b0}
 .best{font:600 calc(var(--u)*4)/1 'Barlow Condensed',sans-serif;letter-spacing:.06em;color:#6b6a66;margin-top:calc(var(--u)*2.5);text-transform:uppercase}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn:focus-visible,#mute:focus-visible{outline:3px solid #ffd23f;outline-offset:3px}
 #mute{position:absolute;right:calc(var(--u)*2);bottom:calc(var(--u)*2);width:calc(var(--u)*9);height:calc(var(--u)*9);border-radius:50%;border:0;background:rgba(255,255,255,.12);color:#fff;font-size:calc(var(--u)*4.4);z-index:5;cursor:pointer;touch-action:manipulation}
 #toastc{position:absolute;left:50%;top:44%;transform:translateX(-50%);background:var(--char);color:#fff;padding:calc(var(--u)*2.4) calc(var(--u)*4);border-radius:calc(var(--u)*2);font-size:calc(var(--u)*3.8);display:none;z-index:9}
 #end{padding:calc(var(--u)*2)}
@@ -130,6 +140,13 @@ p{font-size:calc(var(--u)*4.1);line-height:1.35;margin:calc(var(--u)*2) 0}
  </div>
  <div class="row"><button class="btn ghost" id="eShare">Share score</button><button class="btn ghost" id="eAgain">Play again</button></div>
 </div></div>
+<div class="ov" id="pause"><div class="panel">
+ <div class="kick">Paused</div>
+ <h2>Game paused</h2>
+ <p>Your timer stopped while you were away. Pick up right where you left off.</p>
+ <button class="btn" id="pBtn">Resume</button></div>
+</div>
+<div class="sr" id="sr" aria-live="polite"></div>
 <div class="ov" id="reward"><div class="panel">
  <div class="pv" id="rPrev"><b>Preview only.</b> This reward isn't an active offer yet, and this code can't be used.</div>
  <div class="kick">Top score reward</div>
@@ -154,16 +171,17 @@ let scale=1,dpr=1;
 function fit(){const cw=innerWidth,ch=innerHeight;LAND=cw/ch>1.15;if(LAND){CW=W+SIDE.w;CH=SH;HUD=0}else{CW=720;CH=1080;HUD=84}PY=HUD+SH;
  let w,h;if(cw/ch>CW/CH){h=ch;w=h*CW/CH}else{w=cw;h=w*CH/CW}w=Math.floor(w);h=Math.floor(h);stage.style.width=w+'px';stage.style.height=h+'px';stage.classList.toggle('land',LAND);stage.style.setProperty('--u',(LAND?h/150:w/100)+'px');dpr=Math.min(window.devicePixelRatio||1,2.5);C.width=Math.round(w*dpr);C.height=Math.round(h*dpr);scale=w/CW;
  PIN=LAND?{x:SIDE.x+SIDE.w/2+9*1.5,y:SIDE.head+80+9*1.5}:{x:360+9*1.3,y:PY+22+9*1.3}}
-addEventListener('resize',fit);fit();
+addEventListener('resize',fit);fit();const RM=matchMedia('(prefers-reduced-motion: reduce)');
 
 // ---------- audio ----------
-let AC=null,muted=false,sprayNode=null;
+let AC=null,muted=false,sprayNode=null;try{muted=localStorage.getItem('condonFireMute')==='1'}catch(e){}
+function vib(ms){try{if(!muted&&navigator.vibrate)navigator.vibrate(ms)}catch(e){}}
 function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC}
 function tone(f,d,type='sine',v=.15,slide=0,delay=0){if(muted)return;const a=ac();if(!a)return;const t=a.currentTime+delay,o=a.createOscillator(),g=a.createGain();o.type=type;o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(40,f+slide),t+d);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g).connect(a.destination);o.start(t);o.stop(t+d+.02)}
-const sfx={good(){tone(660,.12,'triangle',.18);tone(990,.18,'triangle',.15,0,.08)},bad(){tone(180,.25,'sawtooth',.12,-60)},alarm(){for(let i=0;i<4;i++){tone(880,.18,'square',.07,0,i*.36);tone(660,.18,'square',.07,0,i*.36+.18)}},pin(){tone(1400,.06,'square',.1);tone(500,.12,'triangle',.12,-200,.05)},win(){[523,659,784,1046].forEach((f,i)=>tone(f,.22,'triangle',.16,0,i*.1))},pin(){tone(1800,.06,'triangle',.09,500);tone(2400,.08,'sine',.05,0,.05)},tick(){tone(220,.04,'square',.07)},locked(){tone(120,.09,'square',.1);tone(110,.09,'square',.08,0,.1)},pull(){tone(1400,.08,'triangle',.08,600);tone(90,.18,'square',.16,-40,.03);tone(300,.5,'sawtooth',.12,-200,.12);noise(1.2,.2)},click(){tone(800,.05,'triangle',.08)}};
+const sfx={good(){vib(15);tone(660,.12,'triangle',.18);tone(990,.18,'triangle',.15,0,.08)},bad(){vib(40);tone(180,.25,'sawtooth',.12,-60)},count(last){tone(last?1175:880,.07,'square',.07)},alarm(){for(let i=0;i<4;i++){tone(880,.18,'square',.07,0,i*.36);tone(660,.18,'square',.07,0,i*.36+.18)}},win(){[523,659,784,1046].forEach((f,i)=>tone(f,.22,'triangle',.16,0,i*.1))},pin(){tone(1800,.06,'triangle',.09,500);tone(2400,.08,'sine',.05,0,.05)},tick(){tone(220,.04,'square',.07)},locked(){tone(120,.09,'square',.1);tone(110,.09,'square',.08,0,.1)},pull(){vib(90);tone(1400,.08,'triangle',.08,600);tone(90,.18,'square',.16,-40,.03);tone(300,.5,'sawtooth',.12,-200,.12);noise(1.2,.2)},click(){tone(800,.05,'triangle',.08)}};
 function noise(d,v){if(muted)return;const a=ac();if(!a)return;const b=a.createBuffer(1,a.sampleRate*d,a.sampleRate),ch=b.getChannelData(0);for(let i=0;i<ch.length;i++)ch[i]=(Math.random()*2-1)*(1-i/ch.length);const s=a.createBufferSource(),g=a.createGain(),f=a.createBiquadFilter();f.type='highpass';f.frequency.value=900;s.buffer=b;g.gain.value=v;s.connect(f).connect(g).connect(a.destination);s.start()}
 function sprayOn(on){const a=AC;if(!a)return;if(on&&!sprayNode&&!muted){const b=a.createBuffer(1,a.sampleRate,a.sampleRate),ch=b.getChannelData(0);for(let i=0;i<ch.length;i++)ch[i]=Math.random()*2-1;const s=a.createBufferSource(),g=a.createGain(),f=a.createBiquadFilter();f.type='bandpass';f.frequency.value=2500;s.buffer=b;s.loop=true;g.gain.value=.12;s.connect(f).connect(g).connect(a.destination);s.start();sprayNode={s,g}}else if(!on&&sprayNode){try{sprayNode.s.stop()}catch(e){}sprayNode=null}}
-const muteB=document.getElementById('mute');muteB.onclick=()=>{muted=!muted;muteB.innerHTML=muted?'&#128263;':'&#128266;';if(muted)sprayOn(false)};
+const muteB=document.getElementById('mute');function muteUI(){muteB.innerHTML=muted?'&#128263;':'&#128266;';muteB.setAttribute('aria-label',muted?'Turn sound on':'Turn sound off');muteB.setAttribute('aria-pressed',muted?'true':'false')}muteUI();muteB.onclick=()=>{muted=!muted;try{localStorage.setItem('condonFireMute',muted?'1':'0')}catch(e){}muteUI();if(muted)sprayOn(false)};
 
 // ---------- drawing helpers ----------
 function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));X.beginPath();X.moveTo(x+r,y);X.arcTo(x+w,y,x+w,y+h,r);X.arcTo(x+w,y+h,x,y+h,r);X.arcTo(x,y+h,x,y,r);X.arcTo(x,y,x+w,y,r);X.closePath()}
@@ -282,11 +300,12 @@ function pickLevel(l){const req=l.hazards.filter(h=>h.req),picked=req.slice();fo
 function rollHazards(){let key='';for(let t=0;t<12;t++){S.act=LEVELS.map(pickLevel);key=S.act.map(a=>a.map(h=>h.id+(h.key||'')).join(',')).join('|');if(key!==lastSets)break}lastSets=key}
 const HZ=()=>S.act[S.L];
 function add(n,x,y){S.score=Math.max(0,S.score+n);S.lvl+=n;if(x!=null)pop(x,y,(n>0?'+':'')+n,n>0?GREEN:'#d11')}
-function setMsg(text,good,dur){S.msg={text,good,t:dur||3}}
+let srLast='';function say(t){if(!t||t===srLast)return;srLast=t;const e=document.getElementById('sr');if(e)e.textContent=t}
+function setMsg(text,good,dur){S.msg={text,good,t:dur||3};say(text)}
 
 // overlays
 const $=id=>document.getElementById(id);
-function ov(id){['title','card','end','reward'].forEach(k=>$(k).classList.toggle('on',k===id))}
+function ov(id){['title','card','end','reward','pause'].forEach(k=>$(k).classList.toggle('on',k===id));if(id)setTimeout(()=>{const o=$(id),b=o&&o.querySelector('button.btn:not([disabled])');if(b&&o.classList.contains('on')&&getComputedStyle(b).display!=='none')try{b.focus({preventScroll:true})}catch(e){}},60)}
 function card(kick,head,body,tip,btn,fn){$('cKick').textContent=kick;$('cHead').textContent=head;$('cBody').textContent=body;$('cTip').style.display=tip?'block':'none';$('cTip').querySelector('span').textContent=tip||'';$('cBtn').textContent=btn;$('cBtn').onclick=()=>{sfx.click();ov(null);fn()};ov('card');S.phase='card'}
 $('play').onclick=()=>{ac();sfx.click();startGame()};
 $('eAgain').onclick=()=>{sfx.click();startGame()};
@@ -295,7 +314,7 @@ rollHazards();
 function startGame(){S.score=0;S.L=0;S.stats={haz:0,fires:0,rush:0,falsePulls:0,first:0};rollHazards();intro()}
 function intro(){const l=lv();S.found=new Set();S.missed=[];S.marks=[];S.toast=null;S.fire=null;S.rush=null;S.idle=0;S.sysFired=false;S.pullT=null;S.pull=newPull();S.boothFired=false;S.boothHaze=0;S.booth=null;S.lvl=0;parts=[];
  card('Level '+(S.L+1)+' of 3',l.name,l.intro,null,'Start',beginSpot)}
-function beginSpot(){S.phase='spot';S.time=SPOT_TIME;S.phaseT=0;S.toast={title:'Tap every fire hazard you see',body:'Wrong taps cost points, so look before you tap.',good:null}}
+function beginSpot(){S.phase='spot';S.time=SPOT_TIME;S.phaseT=0;S.idle=0;S.cd=6;S.toast={title:'Tap every fire hazard you see',body:'Wrong taps cost points, so look before you tap.',good:null};say('Tap every fire hazard you see. Wrong taps cost points.')}
 function endSpot(){const l=lv();const all=S.found.size===HZ().length;if(all){const b=Math.round(S.time*10);if(b>0){add(b);setMsg('All hazards found! Time bonus +'+b,true,2.2)}}else setMsg('Missed '+(HZ().length-S.found.size)+'. They are circled in red.',false,2.2);S.missed=HZ().filter(h=>!S.found.has(h.id));S.phase='reveal';S.phaseT=all?1.2:2.4}
 function fireCells(f,v){const n=5,cells=[];for(let i=0;i<n;i++)cells.push({x:f.x-f.w/2+f.w*i/(n-1),v:v+Math.random()*.15,re:0,seed:Math.random()*10});return cells}
 // paint booth: the automatic dry chemical system knocks the fire down, then it flares back and the player finishes it with an extinguisher
@@ -552,7 +571,7 @@ function inPanel(p){return LAND?p.x>=SIDE.x&&p.y>SIDE.head:p.y>PY}
 function hitD(z,x,y){for(const b of [z.hb,z.hb2])if(b&&x>=b[0]&&x<=b[2]&&y>=b[1]&&y<=b[3])return 0;const d=Math.hypot(x-z.x,y-z.y);return d<Math.max(z.r,46)*1.2?d:1e9}
 function tap(p){const ph=S.phase;
  if(ph==='spot'&&inScene(p)){const l=lv(),sy=p.y-HUD;let h=null,bd=1e9;for(const z of HZ()){if(S.found.has(z.id))continue;const d=hitD(z,p.x,sy);if(d<bd){bd=d;h=z}}
-  if(h){S.found.add(h.id);S.stats.haz++;S.idle=0;sfx.good();add(100+Math.round(S.time*3),h.x,h.y+HUD-h.r);S.toast={title:h.label,body:h.tip,good:true};if(S.found.size===HZ().length)endSpot()}
+  if(h){S.found.add(h.id);S.stats.haz++;S.idle=0;sfx.good();add(100+Math.round(S.time*3),h.x,h.y+HUD-h.r);S.toast={title:h.label,body:h.tip,good:true};say('Found: '+h.label+'. '+h.tip);if(S.found.size===HZ().length)endSpot()}
   else if(!HZ().some(z=>S.found.has(z.id)&&hitD(z,p.x,sy)<1e9)){sfx.bad();add(-20,p.x,p.y);S.marks.push({x:p.x,y:sy,t:.8})}}
  else if(ph==='pick'&&inPanel(p)){let i;if(LAND){const c=Math.floor((p.x-SIDE.x-14)/236),r=Math.floor((p.y-SIDE.head-20)/310);i=(c>=0&&c<2&&r>=0&&r<2)?r*2+c:-1}else i=Math.floor(p.x/(W/4));if(EXT[i])pick(EXT[i].id)}
  else if(ph==='pull'){if(Math.hypot(p.x-PIN.x,p.y-PIN.y)<70||inPanel(p)){S.pass.p=1;sfx.pin();S.phase='spray';S.agent=1;setMsg('Hold to SQUEEZE. AIM low at the base and SWEEP side to side.',true,99);P({x:PIN.x,y:PIN.y,vx:160,vy:-260,g:700,r:6,c:'#ddd',life:1,max:1})}}
@@ -560,10 +579,10 @@ function tap(p){const ph=S.phase;
  else if(ph==='rush'){pullStart(p)}}
 
 // ---------- update ----------
-let last=performance.now(),paused=false;document.addEventListener('visibilitychange',()=>{paused=document.hidden;sprayOn(false);S.ptr.down=false;last=performance.now()});
+let last=performance.now(),paused=false;const LIVE=['spot','reveal','rush','prefire','booth','pick','pull','spray','out'];let held=false;document.addEventListener('visibilitychange',()=>{sprayOn(false);S.ptr.down=false;last=performance.now();if(document.hidden){paused=true;if(LIVE.includes(S.phase)&&!held){held=true;ov('pause')}}else if(!held)paused=false});$('pBtn').onclick=()=>{sfx.click();held=false;paused=false;last=performance.now();ov(null)};
 function update(dt){S.t+=dt;updParts(dt);updPull(dt);if(S.boothHaze>0&&S.phase!=='booth')S.boothHaze=Math.max(.0,S.boothHaze-dt*.08);if(S.shake>0)S.shake-=dt;if(S.msg&&S.msg.t<90){S.msg.t-=dt;if(S.msg.t<=0)S.msg=null}S.marks.forEach(m=>m.t-=dt);S.marks=S.marks.filter(m=>m.t>0);
  const ph=S.phase;
- if(ph==='spot'){S.time-=dt;if(S.time<=0){S.time=0;endSpot()}}
+ if(ph==='spot'){S.time-=dt;S.idle+=dt;const c=Math.ceil(S.time);if(c<=5&&c>0&&c<S.cd){S.cd=c;sfx.count(c===1)}if(S.time<=0){S.time=0;endSpot()}}
  else if(ph==='reveal'){S.phaseT-=dt;if(S.phaseT<=0){if(lv().rush)beginRush();else if(lv().fire.booth)beginBooth();else beginFire()}}
  else if(ph==='prefire'){S.phaseT-=dt;if(S.phaseT<=0)beginFire()}
  else if(ph==='booth')updBooth(dt);
@@ -576,7 +595,7 @@ function emitSpray(){const ox=360,oy=SH-10,tx=S.ptr.x,ty=Math.min(S.ptr.y-HUD,SH
 
 // ---------- render ----------
 function render(){X.setTransform(dpr*scale,0,0,dpr*scale,0,0);X.clearRect(0,0,CW,CH);const l=lv();
- X.save();if(S.shake>0&&!matchMedia('(prefers-reduced-motion: reduce)').matches)X.translate((Math.random()-.5)*10,(Math.random()-.5)*10);
+ X.save();if(S.shake>0&&!RM.matches)X.translate((Math.random()-.5)*10,(Math.random()-.5)*10);
  X.save();X.translate(0,HUD);X.beginPath();X.rect(0,0,W,SH);X.clip();SCENES[l.key]();
  if(S.phase!=='title'){for(const z of HZ())if(S.found.has(z.id)){X.lineWidth=4;X.strokeStyle=GREEN;X.beginPath();X.arc(z.x,z.y,z.r*.85,0,7);X.stroke();circ(z.x+z.r*.6,z.y-z.r*.6,13,GREEN);X.strokeStyle='#fff';X.lineWidth=3;X.beginPath();X.moveTo(z.x+z.r*.6-6,z.y-z.r*.6);X.lineTo(z.x+z.r*.6-1,z.y-z.r*.6+5);X.lineTo(z.x+z.r*.6+7,z.y-z.r*.6-5);X.stroke()}
   if(S.phase==='reveal'||(S.missed.length&&S.phase!=='spot')){for(const z of S.missed){X.setLineDash([8,6]);X.lineWidth=4;X.strokeStyle='#e11';X.beginPath();X.arc(z.x,z.y,z.r*.85,0,7);X.stroke();X.setLineDash([]);if(S.phase==='reveal'){X.font='800 16px "Barlow Condensed",sans-serif';const tw=X.measureText(z.label).width+16;const lx=Math.max(tw/2+4,Math.min(W-tw/2-4,z.x));fr(lx-tw/2,z.y+z.r*.85+4,tw,24,5,'#e11');T(z.label,lx,z.y+z.r*.85+16,16,'#fff','center')}}}
@@ -595,10 +614,10 @@ function render(){X.setTransform(dpr*scale,0,0,dpr*scale,0,0);X.clearRect(0,0,CW
 function drawHUD(){const l=lv(),logoOK=logo.complete&&logo.naturalWidth;
  if(LAND){const x0=SIDE.x,w=SIDE.w;rect(x0,0,w,SIDE.head,RED);rect(x0,SIDE.head-5,w,5,REDD);fr(x0+16,14,200,72,10,'#fff');if(logoOK){const lw=186,lh=lw*logo.naturalHeight/logo.naturalWidth;X.drawImage(logo,x0+23,50-lh/2,lw,lh)}
   T('SCORE',x0+w-18,30,16,'rgba(255,255,255,.75)','right');T(S.score.toLocaleString(),x0+w-18,66,40,'#fff','right');T('LEVEL '+(S.L+1)+'/3',x0+18,110,17,'rgba(255,255,255,.8)');T(l.name.toUpperCase(),x0+18,134,28,'#fff');
-  if(S.phase==='spot'){const tc=S.time<10?'#ffe14d':'#fff';fr(x0+w-112,94,94,48,10,'rgba(0,0,0,.25)');T(Math.ceil(S.time)+'s',x0+w-65,119,30,tc,'center')}return}
+  if(S.phase==='spot'){const tc=S.time<10?'#ffe14d':'#fff',hot=S.time<=5&&S.time>0;fr(x0+w-112,94,94,48,10,hot?'rgba(120,0,0,'+(.35+.35*(S.time%1))+')':'rgba(0,0,0,.25)');T(Math.ceil(S.time)+'s',x0+w-65,119,30,tc,'center')}return}
  rect(0,0,W,HUD,RED);rect(0,HUD-5,W,5,REDD);fr(12,10,176,64,10,'#fff');if(logoOK)X.drawImage(logo,18,13,164,164*logo.naturalHeight/logo.naturalWidth);
  T('LEVEL '+(S.L+1)+'/3',204,28,16,'rgba(255,255,255,.75)');T(l.name.toUpperCase(),204,54,26,'#fff');T('SCORE',W-16,24,14,'rgba(255,255,255,.75)','right');T(S.score.toLocaleString(),W-16,52,34,'#fff','right');
- if(S.phase==='spot'){const tc=S.time<10?'#ffe14d':'#fff';fr(420,18,92,48,10,'rgba(0,0,0,.25)');T(Math.ceil(S.time)+'s',466,43,30,tc,'center')}}
+ if(S.phase==='spot'){const tc=S.time<10?'#ffe14d':'#fff',hot=S.time<=5&&S.time>0;fr(420,18,92,48,10,hot?'rgba(120,0,0,'+(.35+.35*(S.time%1))+')':'rgba(0,0,0,.25)');T(Math.ceil(S.time)+'s',466,43,30,tc,'center')}}
 function stationPulse(x,y,w,h){if(S.sysFired)return;const k=.5+.5*Math.sin(S.t*6);X.strokeStyle=`rgba(255,220,60,${.25+.55*k})`;X.lineWidth=4;rr(x,y,w,h,14);X.stroke()}
 function drawPanel(){const ph=S.phase,l=lv();
  if(LAND){const x0=SIDE.x,y0=SIDE.head,w=SIDE.w,cx=x0+w/2;rect(x0,y0,w,CH-y0,CHAR);
@@ -621,7 +640,7 @@ function drawPanel(){const ph=S.phase,l=lv();
 function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;if(!paused){update(dt);render()}requestAnimationFrame(loop)}
 requestAnimationFrame(loop);
 // test hooks
-window.CG={S,LEVELS,rollHazards,isPerfect,rewardQualifies,REWARD,beginRush,beginBooth,rewardEnd,endGame,toScreen(x,y){const r=C.getBoundingClientRect();return{x:r.left+x/CW*r.width,y:r.top+y/CH*r.height}},get pin(){return PIN},get HUD(){return HUD},get PY(){return PY},get LAND(){return LAND},get CW(){return CW},get CH(){return CH},SIDE,hitD,render};
+if(/[?&]cgtest=1\b/.test(location.search))window.CG={S,held:()=>held,LEVELS,rollHazards,isPerfect,rewardQualifies,REWARD,beginRush,beginBooth,rewardEnd,endGame,toScreen(x,y){const r=C.getBoundingClientRect();return{x:r.left+x/CW*r.width,y:r.top+y/CH*r.height}},get pin(){return PIN},get HUD(){return HUD},get PY(){return PY},get LAND(){return LAND},get CW(){return CW},get CH(){return CH},SIDE,hitD,render};
 })();
 </script>
 </body>
