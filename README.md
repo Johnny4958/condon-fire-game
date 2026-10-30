@@ -36,3 +36,7 @@ Paste this into an HTML or embed block. On laptops it shows a landscape box up t
 ```
 
 `index.html` is the whole game in one file, with fonts and logo built in.
+
+## 3D version
+
+`3d/index.html` is a first-person 3D version: three rooms (office, restaurant kitchen, body and paint shop), with hazards to tag, four extinguishers on the wall, P.A.S.S. technique scoring, a kitchen hood pull station and an evacuate-and-call-911 ending when a fire gets too big. Laptop: WASD, mouse, E, R, hold click. Phone: left thumb walks, right thumb looks, hold SPRAY and slide to sweep. Live at https://johnny4958.github.io/condon-fire-game/3d/ and it shares the 5% reward code with the 2D game, one per device. Source is built from a separate three.js project into this single file.
