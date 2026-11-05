@@ -1,0 +1,31 @@
+/* Additions for the static copy: mobile menu, game embed, nav fit. Uses the site's own theme variables. */
+html{scroll-behavior:smooth}
+header nav[aria-label="Mobile navigation"][hidden]{display:none!important}
+
+/* Keep the desktop nav on one line now that it has a fifth link */
+@media (min-width:1024px) and (max-width:1200px){
+  header nav[aria-label="Main navigation"]{gap:1.1rem}
+  header nav[aria-label="Main navigation"] a{white-space:nowrap}
+}
+@media (min-width:1024px){header nav[aria-label="Main navigation"] a{white-space:nowrap}}
+
+/* Fire Safety Game embed */
+.cf-game{width:100%;max-width:1100px;margin:0 auto}
+.cf-game-frame{position:relative;background:hsl(var(--secondary));border-top:4px solid hsl(var(--primary));box-shadow:0 18px 40px -24px rgba(0,0,0,.55)}
+.cf-game iframe{display:block;width:100%;aspect-ratio:16/9;min-height:420px;max-height:85vh;border:0;background:#111;touch-action:none}
+@media (max-width:700px) and (orientation:portrait){.cf-game iframe{aspect-ratio:auto;height:75vh;min-height:0}}
+@media (max-height:500px) and (orientation:landscape){.cf-game iframe{aspect-ratio:auto;height:85vh;min-height:0}}
+.cf-game-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 20px;padding:14px 18px;color:hsl(var(--secondary-foreground));font-size:.875rem}
+.cf-game-bar strong{font-family:var(--font-heading);font-size:1.35rem;letter-spacing:-.01em;line-height:1}
+.cf-game-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin-top:22px}
+.cf-btn-red{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;background:#c8102e;color:#fff;font-weight:700;font-size:.95rem;padding:14px 24px;border-radius:999px;text-decoration:none;transition:background-color .2s}
+.cf-btn-red:hover{background:hsl(var(--secondary))}
+.cf-link{font-size:.875rem;font-weight:600;color:hsl(var(--foreground));text-decoration:underline;text-decoration-color:hsl(var(--primary));text-underline-offset:4px}
+.cf-link:hover{color:hsl(var(--primary))}
+.cf-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.cf-chips span{border:1px solid hsl(var(--border));background:hsl(var(--background));padding:4px 8px;font-size:.75rem;font-weight:600}
+@media (max-width:640px){.cf-btn-red{width:100%}}
+
+/* Request form note (the copy opens an email instead of posting to GoDaddy) */
+.cf-form-note{font-size:.8rem;color:hsl(var(--muted-foreground))}
+.cf-form-error{font-size:.85rem;color:hsl(var(--primary));font-weight:600}
